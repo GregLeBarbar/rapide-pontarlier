@@ -1,390 +1,810 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription — Rapide de Pontarlier 2026</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --blue:    #1A3A6B;
-      --gold:    #C8A951;
-      --white:   #ffffff;
-      --bg:      #f5f6f8;
-      --text:    #1a1a2e;
-      --muted:   #6b7280;
-      --border:  #d1d5db;
-      --success: #16a34a;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-    header {
-      background: var(--blue);
-      position: relative; overflow: hidden;
-      padding: 48px 24px 40px; text-align: center;
-    }
-    header::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: repeating-conic-gradient(rgba(255,255,255,0.07) 0% 25%, transparent 0% 50%);
-      background-size: 40px 40px; pointer-events: none;
-    }
-    header .pawn-deco {
-      position: absolute; left: -10px; top: 50%; transform: translateY(-50%);
-      font-size: 180px; opacity: 0.07; line-height: 1; user-select: none;
-    }
-    .header-inner { position: relative; z-index: 1; }
-    header .label {
-      font-size: 12px; font-weight: 700; letter-spacing: 4px;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 12px;
-    }
-    header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 900;
-      color: var(--white); line-height: 1.1;
-    }
-    header h1 span { color: var(--gold); }
-
-    .header-info-box {
-      display: inline-flex; align-items: stretch;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(200,169,81,0.35);
-      border-radius: 10px; margin-top: 20px; overflow: hidden;
-    }
-    .hib-cell { padding: 10px 28px; text-align: center; }
-    .hib-sep { width: 1px; background: rgba(200,169,81,0.4); }
-    .hib-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
-    .hib-val { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); }
-    .hib-val.small { font-size: 1rem; color: var(--gold); }
-
-    .header-meta {
-      margin-top: 16px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-    }
-    .chip {
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(200,169,81,0.4);
-      border-radius: 99px; padding: 6px 16px; font-size: 13px; color: var(--white);
-      display: flex; align-items: center; gap: 7px;
-    }
-    .chip svg {
-      width: 14px; height: 14px; stroke: var(--gold); fill: none;
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
-    }
-    .header-badges {
-      margin-top: 12px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-    }
-    .badge {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
-      padding: 5px 14px; border-radius: 99px; display: flex; align-items: center; gap: 6px;
-    }
-    .badge.outline-blue { border: 1.5px solid rgba(255,255,255,0.5); color: var(--white); }
-    .badge.outline-gold { border: 1.5px solid var(--gold); color: var(--gold); }
-
-    .gold-bar { height: 5px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-
-    main { max-width: 680px; margin: 0 auto; padding: 40px 20px 60px; }
-
-    .alert-banner {
-      background: #fff5e6; border: 1.5px solid var(--gold);
-      border-radius: 10px; padding: 14px 20px; margin-bottom: 24px;
-      display: flex; align-items: center; gap: 14px;
-    }
-    .alert-icon {
-      width: 36px; height: 36px; background: var(--gold); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .alert-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-    .alert-banner p { font-size: 14px; color: var(--text); line-height: 1.5; }
-    .alert-banner strong { color: var(--blue); }
-
-    .section-title {
-      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700;
-      color: var(--blue); letter-spacing: 1px; text-transform: uppercase;
-      margin-bottom: 18px; padding-bottom: 8px; border-bottom: 2px solid var(--gold);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
-    .card { background: var(--white); border-radius: 12px; border: 1px solid var(--border); padding: 28px; margin-bottom: 24px; }
-
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .info-cell { background: #f8f9fb; border-radius: 8px; padding: 14px 16px; border-left: 3px solid var(--gold); }
-    .info-cell .ic-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-    .info-cell .ic-val { font-size: 15px; font-weight: 700; color: var(--blue); }
-    .info-cell.full { grid-column: 1 / -1; }
-
-    .tarif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .tarif-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
-    .tarif-card .montant { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--blue); }
-    .tarif-card .libelle { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field.full { grid-column: 1 / -1; }
-    label { font-size: 13px; font-weight: 700; color: var(--blue); letter-spacing: 0.3px; }
-    label .req { color: var(--gold); margin-left: 2px; }
-    label .opt { font-weight: 300; color: var(--muted); font-size: 12px; margin-left: 4px; }
-    input, select {
-      height: 44px; padding: 0 14px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-family: 'Lato', sans-serif; font-size: 15px;
-      color: var(--text); background: #fafafa;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; width: 100%;
-    }
-    input:focus, select:focus {
-      outline: none; border-color: var(--blue); background: var(--white);
-      box-shadow: 0 0 0 3px rgba(26,58,107,0.10);
-    }
-    input.error { border-color: #dc2626; }
-    .hint { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-    .submit-wrap { margin-top: 28px; text-align: center; }
-    button[type="submit"] {
-      background: var(--blue); color: var(--white);
-      font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-      letter-spacing: 1px; border: none; border-radius: 10px; padding: 16px 48px;
-      cursor: pointer; transition: background 0.2s, transform 0.15s;
-      width: 100%; max-width: 320px; position: relative; overflow: hidden;
-    }
-    button[type="submit"]:hover { background: #24508f; transform: translateY(-1px); }
-    button[type="submit"]:active { transform: translateY(0); }
-    button[type="submit"]::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold);
-    }
-    .submit-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
-
-    #success-msg {
-      display: none; background: #f0fdf4; border: 1.5px solid #86efac;
-      border-radius: 12px; padding: 32px; text-align: center; margin-top: 24px;
-    }
-    #success-msg .check {
-      width: 56px; height: 56px; background: var(--success); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
-    }
-    #success-msg .check svg { width: 28px; height: 28px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-    #success-msg h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--success); margin-bottom: 8px; }
-    #success-msg p { color: var(--muted); font-size: 14px; line-height: 1.6; }
-
-    footer { background: var(--blue); color: rgba(255,255,255,0.6); text-align: center; padding: 20px; font-size: 13px; }
-    footer a { color: var(--gold); text-decoration: none; }
-
-    @media (max-width: 520px) {
-      .fields, .tarif-grid, .info-grid { grid-template-columns: 1fr; }
-      .field.full, .info-cell.full { grid-column: 1; }
-      .header-info-box { flex-direction: column; }
-      .hib-sep { width: 100%; height: 1px; }
-    }
-  </style>
-</head>
-<body>
-
-<header>
-  <div class="pawn-deco">♟</div>
-  <div class="header-inner">
-    <p class="label">♟ Le Pion-Tissalien</p>
-    <h1>Rapide de<br/><span>Pontarlier</span></h1>
-
-    <div class="header-info-box">
-      <div class="hib-cell">
-        <div class="hib-label">Rondes</div>
-        <div class="hib-val">7</div>
-      </div>
-      <div class="hib-sep"></div>
-      <div class="hib-cell">
-        <div class="hib-label">Cadence</div>
-        <div class="hib-val small">10 min + 3 sec / coup</div>
-      </div>
-    </div>
-
-    <div class="header-meta">
-      <div class="chip">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-        Samedi 25 Avril 2026
-      </div>
-      <div class="chip">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="3"/><path d="M12 2a9 9 0 0 1 9 9c0 5-9 13-9 13S3 16 3 11a9 9 0 0 1 9-9z"/></svg>
-        MJC des Capucins
-      </div>
-      <div class="chip">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Pointage 13h30 · 1ère partie 14h00
-      </div>
-    </div>
-
-    <div class="header-badges">
-      <div class="badge outline-blue">✕ Tournoi non homologué</div>
-      <div class="badge outline-gold">✓ Ouvert aux non licenciés</div>
-    </div>
-  </div>
-</header>
-
-<div class="gold-bar"></div>
-
-<main>
-
-  <div class="alert-banner">
-    <div class="alert-icon">
-      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    </div>
-    <p><strong>Inscription obligatoire — Places limitées aux 40 premiers inscrits.</strong><br/>
-    Le paiement s'effectue sur place le jour du tournoi.</p>
-  </div>
-
-  <div class="card">
-    <div class="section-title"><span class="dot"></span>Informations du tournoi</div>
-    <div class="info-grid">
-      <div class="info-cell">
-        <div class="ic-label">Date</div>
-        <div class="ic-val">Samedi 25 Avril 2026</div>
-      </div>
-      <div class="info-cell">
-        <div class="ic-label">Lieu</div>
-        <div class="ic-val">MJC des Capucins</div>
-      </div>
-      <div class="info-cell">
-        <div class="ic-label">Pointage des inscriptions</div>
-        <div class="ic-val">13h30</div>
-      </div>
-      <div class="info-cell">
-        <div class="ic-label">Début de la 1ère partie</div>
-        <div class="ic-val">14h00</div>
-      </div>
-      <div class="info-cell full">
-        <div class="ic-label">Dotation</div>
-        <div class="ic-val">100% des prix redistribués aux joueurs</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section-title"><span class="dot"></span>Tarifs d'inscription</div>
-    <div class="tarif-grid">
-      <div class="tarif-card">
-        <div class="montant">5 €</div>
-        <div class="libelle">Enfants &amp; Jeunes</div>
-      </div>
-      <div class="tarif-card">
-        <div class="montant">8 €</div>
-        <div class="libelle">Adultes</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" id="form-card">
-    <div class="section-title"><span class="dot"></span>Formulaire d'inscription</div>
-
-    <form id="inscription-form" action="https://formspree.io/f/VOTRE_ID" method="POST" novalidate>
-
-      <p style="font-size:12px;color:var(--muted);margin-bottom:18px;">
-        Les champs marqués <span style="color:var(--gold);font-weight:700;">*</span> sont obligatoires.
-      </p>
-
-      <div class="fields">
-        <div class="field">
-          <label for="nom">Nom <span class="req">*</span></label>
-          <input type="text" id="nom" name="nom" placeholder="DUPONT" required autocomplete="family-name"/>
-        </div>
-        <div class="field">
-          <label for="prenom">Prénom <span class="req">*</span></label>
-          <input type="text" id="prenom" name="prenom" placeholder="Jean" required autocomplete="given-name"/>
-        </div>
-        <div class="field full">
-          <label for="ddn">Date de naissance <span class="req">*</span></label>
-          <input type="date" id="ddn" name="date_naissance" required/>
-        </div>
-
-        <div class="field full" style="margin-top:8px;">
-          <div class="section-title" style="font-size:0.85rem;margin-bottom:14px;"><span class="dot"></span>Informations facultatives</div>
-        </div>
-
-        <div class="field">
-          <label for="telephone">Téléphone <span class="opt">(facultatif)</span></label>
-          <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78" autocomplete="tel"/>
-        </div>
-        <div class="field">
-          <label for="email">Email <span class="opt">(facultatif)</span></label>
-          <input type="email" id="email" name="email" placeholder="jean@email.com" autocomplete="email"/>
-          <span class="hint">Pour confirmation d'inscription</span>
-        </div>
-        <div class="field">
-          <label for="ffe">Code FFE <span class="opt">(facultatif)</span></label>
-          <input type="text" id="ffe" name="code_ffe" placeholder="ex : A12345"/>
-          <span class="hint">Numéro de licence FFE</span>
-        </div>
-        <div class="field">
-          <label for="elo">Elo rapide <span class="opt">(facultatif)</span></label>
-          <input type="number" id="elo" name="elo_rapide" placeholder="ex : 1450" min="100" max="3000"/>
-          <span class="hint">Classement Elo rapide FIDE/FFE</span>
-        </div>
-      </div>
-
-      <input type="text" name="_gotcha" style="display:none"/>
-
-      <div class="submit-wrap">
-        <button type="submit">S'inscrire au tournoi</button>
-        <p class="submit-note">Paiement sur place le jour du tournoi · 40 places maximum</p>
-      </div>
-
-    </form>
-
-    <div id="success-msg">
-      <div class="check">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <h3>Inscription enregistrée !</h3>
-      <p>Merci pour votre inscription au Rapide de Pontarlier.<br/>
-      Rendez-vous le <strong>samedi 25 avril 2026</strong> à la MJC des Capucins.<br/>
-      Pointage des inscriptions à <strong>13h30</strong>, 1ère partie à <strong>14h00</strong>.<br/>
-      Le paiement s'effectue sur place.</p>
-    </div>
-  </div>
-
-  <div style="text-align:center; color:var(--muted); font-size:13px; margin-top:8px;">
-    Une question ? <a href="mailto:piontissalien@gmail.com" style="color:var(--blue);font-weight:700;">piontissalien@gmail.com</a>
-  </div>
-
-</main>
-
-<footer>
-  <p>♟ Le Pion-Tissalien ♟ &mdash; <a href="mailto:piontissalien@gmail.com">piontissalien@gmail.com</a></p>
-</footer>
-
-<script>
-  const form = document.getElementById('inscription-form');
-  const successMsg = document.getElementById('success-msg');
-
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const required = form.querySelectorAll('[required]');
-    let valid = true;
-    required.forEach(el => {
-      el.classList.remove('error');
-      if (!el.value.trim()) { el.classList.add('error'); valid = false; }
-    });
-    if (!valid) { const fe = form.querySelector('.error'); if (fe) fe.focus(); return; }
-
-    const btn = form.querySelector('button[type="submit"]');
-    btn.textContent = 'Envoi en cours…';
-    btn.disabled = true;
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST', body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        form.style.display = 'none';
-        successMsg.style.display = 'block';
-        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        btn.textContent = 'Erreur — réessayez'; btn.disabled = false;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscription — Rapide de Pontarlier 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --blue: #1a3a6b;
+        --gold: #c8a951;
+        --white: #ffffff;
+        --bg: #f5f6f8;
+        --text: #1a1a2e;
+        --muted: #6b7280;
+        --border: #d1d5db;
+        --success: #16a34a;
       }
-    } catch(err) {
-      btn.textContent = 'Erreur réseau — réessayez'; btn.disabled = false;
-    }
-  });
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Lato", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
 
-  form.querySelectorAll('input').forEach(el => {
-    el.addEventListener('input', () => el.classList.remove('error'));
-  });
-</script>
+      header {
+        background: var(--blue);
+        position: relative;
+        overflow: hidden;
+        padding: 48px 24px 40px;
+        text-align: center;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-conic-gradient(
+          rgba(255, 255, 255, 0.07) 0% 25%,
+          transparent 0% 50%
+        );
+        background-size: 40px 40px;
+        pointer-events: none;
+      }
+      header .pawn-deco {
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 180px;
+        opacity: 0.07;
+        line-height: 1;
+        user-select: none;
+      }
+      .header-inner {
+        position: relative;
+        z-index: 1;
+      }
+      header .label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 6vw, 3.4rem);
+        font-weight: 900;
+        color: var(--white);
+        line-height: 1.1;
+      }
+      header h1 span {
+        color: var(--gold);
+      }
 
-</body>
+      .header-info-box {
+        display: inline-flex;
+        align-items: stretch;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(200, 169, 81, 0.35);
+        border-radius: 10px;
+        margin-top: 20px;
+        overflow: hidden;
+      }
+      .hib-cell {
+        padding: 10px 28px;
+        text-align: center;
+      }
+      .hib-sep {
+        width: 1px;
+        background: rgba(200, 169, 81, 0.4);
+      }
+      .hib-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .hib-val {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+      }
+      .hib-val.small {
+        font-size: 1rem;
+        color: var(--gold);
+      }
+
+      .header-meta {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(200, 169, 81, 0.4);
+        border-radius: 99px;
+        padding: 6px 16px;
+        font-size: 13px;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .chip svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--gold);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+      .header-badges {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        padding: 5px 14px;
+        border-radius: 99px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .badge.outline-blue {
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        color: var(--white);
+      }
+      .badge.outline-gold {
+        border: 1.5px solid var(--gold);
+        color: var(--gold);
+      }
+
+      .gold-bar {
+        height: 5px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 40px 20px 60px;
+      }
+
+      .alert-banner {
+        background: #fff5e6;
+        border: 1.5px solid var(--gold);
+        border-radius: 10px;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .alert-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .alert-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: white;
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .alert-banner p {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .alert-banner strong {
+        color: var(--blue);
+      }
+
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--blue);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-title .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
+      .card {
+        background: var(--white);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .info-cell {
+        background: #f8f9fb;
+        border-radius: 8px;
+        padding: 14px 16px;
+        border-left: 3px solid var(--gold);
+      }
+      .info-cell .ic-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .info-cell .ic-val {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--blue);
+      }
+      .info-cell.full {
+        grid-column: 1 / -1;
+      }
+
+      .tarif-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .tarif-card {
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+      }
+      .tarif-card .montant {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--blue);
+      }
+      .tarif-card .libelle {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .field.full {
+        grid-column: 1 / -1;
+      }
+      label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--blue);
+        letter-spacing: 0.3px;
+      }
+      label .req {
+        color: var(--gold);
+        margin-left: 2px;
+      }
+      label .opt {
+        font-weight: 300;
+        color: var(--muted);
+        font-size: 12px;
+        margin-left: 4px;
+      }
+      input,
+      select {
+        height: 44px;
+        padding: 0 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: "Lato", sans-serif;
+        font-size: 15px;
+        color: var(--text);
+        background: #fafafa;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
+        width: 100%;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--blue);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(26, 58, 107, 0.1);
+      }
+      input.error {
+        border-color: #dc2626;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .submit-wrap {
+        margin-top: 28px;
+        text-align: center;
+      }
+      button[type="submit"] {
+        background: var(--blue);
+        color: var(--white);
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        border: none;
+        border-radius: 10px;
+        padding: 16px 48px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        width: 100%;
+        max-width: 320px;
+        position: relative;
+        overflow: hidden;
+      }
+      button[type="submit"]:hover {
+        background: #24508f;
+        transform: translateY(-1px);
+      }
+      button[type="submit"]:active {
+        transform: translateY(0);
+      }
+      button[type="submit"]::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gold);
+      }
+      .submit-note {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 10px;
+      }
+
+      #success-msg {
+        display: none;
+        background: #f0fdf4;
+        border: 1.5px solid #86efac;
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        margin-top: 24px;
+      }
+      #success-msg .check {
+        width: 56px;
+        height: 56px;
+        background: var(--success);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+      #success-msg .check svg {
+        width: 28px;
+        height: 28px;
+        stroke: white;
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      #success-msg h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        color: var(--success);
+        margin-bottom: 8px;
+      }
+      #success-msg p {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      footer {
+        background: var(--blue);
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        padding: 20px;
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+
+      @media (max-width: 520px) {
+        .fields,
+        .tarif-grid,
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+        .field.full,
+        .info-cell.full {
+          grid-column: 1;
+        }
+        .header-info-box {
+          flex-direction: column;
+        }
+        .hib-sep {
+          width: 100%;
+          height: 1px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="pawn-deco">♟</div>
+      <div class="header-inner">
+        <p class="label">♟ Le Pion-Tissalien</p>
+        <h1>Rapide de<br /><span>Pontarlier</span></h1>
+
+        <div class="header-info-box">
+          <div class="hib-cell">
+            <div class="hib-label">Rondes</div>
+            <div class="hib-val">7</div>
+          </div>
+          <div class="hib-sep"></div>
+          <div class="hib-cell">
+            <div class="hib-label">Cadence</div>
+            <div class="hib-val small">10 min + 3 sec / coup</div>
+          </div>
+        </div>
+
+        <div class="header-meta">
+          <div class="chip">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+            </svg>
+            Samedi 25 Avril 2026
+          </div>
+          <div class="chip">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="11" r="3" />
+              <path
+                d="M12 2a9 9 0 0 1 9 9c0 5-9 13-9 13S3 16 3 11a9 9 0 0 1 9-9z"
+              />
+            </svg>
+            MJC des Capucins
+          </div>
+          <div class="chip">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            Pointage 13h30 · 1ère partie 14h00
+          </div>
+        </div>
+
+        <div class="header-badges">
+          <div class="badge outline-blue">✕ Tournoi non homologué</div>
+          <div class="badge outline-gold">✓ Ouvert aux non licenciés</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="gold-bar"></div>
+
+    <main>
+      <div class="alert-banner">
+        <div class="alert-icon">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <p>
+          <strong
+            >Inscription obligatoire — Places limitées aux 40 premiers
+            inscrits.</strong
+          ><br />
+          Le paiement s'effectue sur place le jour du tournoi.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <span class="dot"></span>Informations du tournoi
+        </div>
+        <div class="info-grid">
+          <div class="info-cell">
+            <div class="ic-label">Date</div>
+            <div class="ic-val">Samedi 25 Avril 2026</div>
+          </div>
+          <div class="info-cell">
+            <div class="ic-label">Lieu</div>
+            <div class="ic-val">MJC des Capucins</div>
+          </div>
+          <div class="info-cell">
+            <div class="ic-label">Pointage des inscriptions</div>
+            <div class="ic-val">13h30</div>
+          </div>
+          <div class="info-cell">
+            <div class="ic-label">Début de la 1ère partie</div>
+            <div class="ic-val">14h00</div>
+          </div>
+          <div class="info-cell full">
+            <div class="ic-label">Dotation</div>
+            <div class="ic-val">100% des prix redistribués aux joueurs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <span class="dot"></span>Tarifs d'inscription
+        </div>
+        <div class="tarif-grid">
+          <div class="tarif-card">
+            <div class="montant">5 €</div>
+            <div class="libelle">Enfants &amp; Jeunes</div>
+          </div>
+          <div class="tarif-card">
+            <div class="montant">8 €</div>
+            <div class="libelle">Adultes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="form-card">
+        <div class="section-title">
+          <span class="dot"></span>Formulaire d'inscription
+        </div>
+
+        <form
+          id="inscription-form"
+          action="https://formspree.io/f/VOTRE_ID"
+          method="POST"
+          novalidate
+        >
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 18px">
+            Les champs marqués
+            <span style="color: var(--gold); font-weight: 700">*</span> sont
+            obligatoires.
+          </p>
+
+          <div class="fields">
+            <div class="field">
+              <label for="nom">Nom <span class="req">*</span></label>
+              <input
+                type="text"
+                id="nom"
+                name="nom"
+                placeholder="DUPONT"
+                required
+                autocomplete="family-name"
+              />
+            </div>
+            <div class="field">
+              <label for="prenom">Prénom <span class="req">*</span></label>
+              <input
+                type="text"
+                id="prenom"
+                name="prenom"
+                placeholder="Jean"
+                required
+                autocomplete="given-name"
+              />
+            </div>
+            <div class="field full">
+              <label for="ddn"
+                >Date de naissance <span class="req">*</span></label
+              >
+              <input type="date" id="ddn" name="date_naissance" required />
+            </div>
+
+            <div class="field full" style="margin-top: 8px">
+              <div
+                class="section-title"
+                style="font-size: 0.85rem; margin-bottom: 14px"
+              >
+                <span class="dot"></span>Informations facultatives
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="telephone"
+                >Téléphone <span class="opt">(facultatif)</span></label
+              >
+              <input
+                type="tel"
+                id="telephone"
+                name="telephone"
+                placeholder="06 12 34 56 78"
+                autocomplete="tel"
+              />
+            </div>
+            <div class="field">
+              <label for="email"
+                >Email <span class="opt">(facultatif)</span></label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="jean@email.com"
+                autocomplete="email"
+              />
+              <span class="hint">Pour confirmation d'inscription</span>
+            </div>
+            <div class="field">
+              <label for="ffe"
+                >Code FFE <span class="opt">(facultatif)</span></label
+              >
+              <input
+                type="text"
+                id="ffe"
+                name="code_ffe"
+                placeholder="ex : A12345"
+              />
+              <span class="hint">Numéro de licence FFE</span>
+            </div>
+            <div class="field">
+              <label for="elo"
+                >Elo rapide <span class="opt">(facultatif)</span></label
+              >
+              <input
+                type="number"
+                id="elo"
+                name="elo_rapide"
+                placeholder="ex : 1450"
+                min="100"
+                max="3000"
+              />
+              <span class="hint">Classement Elo rapide FIDE/FFE</span>
+            </div>
+          </div>
+
+          <input type="text" name="_gotcha" style="display: none" />
+
+          <div class="submit-wrap">
+            <button type="submit">S'inscrire au tournoi</button>
+            <p class="submit-note">
+              Paiement sur place le jour du tournoi · 40 places maximum
+            </p>
+          </div>
+        </form>
+
+        <div id="success-msg">
+          <div class="check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          </div>
+          <h3>Inscription enregistrée !</h3>
+          <p>
+            Merci pour votre inscription au Rapide de Pontarlier.<br />
+            Rendez-vous le <strong>samedi 25 avril 2026</strong> à la MJC des
+            Capucins.<br />
+            Pointage des inscriptions à <strong>13h30</strong>, 1ère partie à
+            <strong>14h00</strong>.<br />
+            Le paiement s'effectue sur place.
+          </p>
+        </div>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          color: var(--muted);
+          font-size: 13px;
+          margin-top: 8px;
+        "
+      >
+        Une question ? +33 6 58 25 28 71
+      </div>
+    </main>
+
+    <footer>
+      <p>♟ Le Pion-Tissalien ♟ &mdash; +33 6 58 25 28 71</p>
+    </footer>
+
+    <script>
+      const form = document.getElementById("inscription-form");
+      const successMsg = document.getElementById("success-msg");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const required = form.querySelectorAll("[required]");
+        let valid = true;
+        required.forEach((el) => {
+          el.classList.remove("error");
+          if (!el.value.trim()) {
+            el.classList.add("error");
+            valid = false;
+          }
+        });
+        if (!valid) {
+          const fe = form.querySelector(".error");
+          if (fe) fe.focus();
+          return;
+        }
+
+        const btn = form.querySelector('button[type="submit"]');
+        btn.textContent = "Envoi en cours…";
+        btn.disabled = true;
+
+        try {
+          const response = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: { Accept: "application/json" },
+          });
+          if (response.ok) {
+            form.style.display = "none";
+            successMsg.style.display = "block";
+            successMsg.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else {
+            btn.textContent = "Erreur — réessayez";
+            btn.disabled = false;
+          }
+        } catch (err) {
+          btn.textContent = "Erreur réseau — réessayez";
+          btn.disabled = false;
+        }
+      });
+
+      form.querySelectorAll("input").forEach((el) => {
+        el.addEventListener("input", () => el.classList.remove("error"));
+      });
+    </script>
+  </body>
 </html>
